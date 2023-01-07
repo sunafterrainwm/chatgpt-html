@@ -1,6 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
-  
+<html translate="no">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -41,10 +40,9 @@
           150); // 每隔50毫秒打印一个字符
         }
         var xhr = new XMLHttpRequest();
-        var url = "https://api.openai.com/v1/completions";
+        var url = new URL("api/completions.php", window.location.href).href;
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader("Authorization", "Bearer 123456");
         xhr.onreadystatechange = function() {
           if (xhr.readyState === 4 && xhr.status === 200) {
             var json = JSON.parse(xhr.responseText);
@@ -68,18 +66,10 @@
           }
         };
 
-        var data = JSON.stringify({
-          "prompt": document.getElementById("chat-gpt-input").value,
-          "max_tokens": 2048,
-          "temperature": 0.5,
-          "top_p": 1,
-          "frequency_penalty": 0,
-          "presence_penalty": 0,
-          "model": "text-davinci-003"
-        });
-        console.log(data);
+        var formData = new FormData();
+        formData.append("prompt", document.getElementById("chat-gpt-input").value);
         await printMessage('正在思考，请等待......');
-		await xhr.send(data);
+		await xhr.send(formData);
       }
 	</script>
   </head>
