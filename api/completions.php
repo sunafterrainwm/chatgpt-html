@@ -2,8 +2,8 @@
 
 define('PHP_IS_CLI', php_sapi_name() == 'cli');
 
-if ( PHP_IS_CLI ) {
-    if ( $argc < 2 ) {
+if (PHP_IS_CLI) {
+    if ($argc < 2) {
         echo "usage: {$argv[0]} <prompt>";
         exit(1);
     }
@@ -41,13 +41,14 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_URL , "https://api.openai.com/v1/completions");
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Content-type: application/json',
+    'Accept:application/json',
     "Authorization: "Bearer $openAI_token"
 ]);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt(
     $ch,
     CURLOPT_POSTFIELDS,
-    http_build_query(
+    json_encode(
         ['prompt' => $prompt] + $completions_options
     )
 );
